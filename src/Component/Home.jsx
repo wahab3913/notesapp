@@ -1,15 +1,10 @@
 /* eslint-disable react/prop-types */
-import {
-  Box,
-  Button,
-  Container,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Dialog, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const inputStyle = {
   background: "#181B24",
@@ -31,7 +26,7 @@ const inputStyle = {
 // eslint-disable-next-line react/prop-types
 const Home = ({ allData, setAllData }) => {
   const [data, setData] = useState({
-    id: Math.random().toString(),
+    id: Math.random().toString() + new Date().getMinutes().toString(),
     data: new Date().toDateString(),
     text: "",
     body: "",
@@ -52,15 +47,16 @@ const Home = ({ allData, setAllData }) => {
         return item;
       });
       setAllData(newData);
+      //   handleClose();
       setEditData("");
     } else if (editId === 0) {
       setAllData([...allData, data]);
+      //   handleClose();
     }
     setData({
       text: "",
       body: "",
     });
-    handleClose();
   };
   const removeData = (id) => {
     const newData = allData.filter((item) => item.id !== id);
@@ -92,7 +88,7 @@ const Home = ({ allData, setAllData }) => {
               borderRadius: 4,
               mt: 12,
               border: "1px solid gray",
-              minHeight: "75vh",
+              minHeight: { xs: "60vh", md: "75vh" },
             }}
           >
             <Typography
@@ -117,25 +113,42 @@ const Home = ({ allData, setAllData }) => {
                       mx: 2,
                       mt: 2,
                       cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
                       borderRadius: 1,
                     }}
                   >
-                    <Typography fontSize={"24px"}>{text}</Typography>
-                    <Typography fontSize={"16px"}>{body}</Typography>
-                    <Button
-                      onClick={() => {
-                        editContent(id);
+                    <Box
+                      sx={{
+                        width: "200px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
                       }}
                     >
-                      Edit
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        removeData(id);
-                      }}
-                    >
-                      delete
-                    </Button>
+                      <Typography fontSize={"24px"}>{text}</Typography>
+                      <Typography fontSize={"16px"}>{body}</Typography>
+                    </Box>
+                    <Box>
+                      <EditIcon
+                        onClick={() => {
+                          editContent(id);
+                        }}
+                      >
+                        Edit
+                      </EditIcon>
+                      <DeleteIcon
+                        sx={{
+                          color: "red",
+                          mx: 2,
+                        }}
+                        onClick={() => {
+                          removeData(id);
+                        }}
+                      >
+                        delete
+                      </DeleteIcon>
+                    </Box>
                   </Box>
                 );
               })
@@ -146,7 +159,16 @@ const Home = ({ allData, setAllData }) => {
             )}
           </Box>
         </Box>
-        <Box display={"flex"} mt="-40px" justifyContent={"flex-end"}>
+        <Box
+          display={"flex"}
+          mt={{ xs: "40px", md: "-40px" }}
+          mr={{
+            xs: "0px",
+            sm: "50px",
+            md: "30px",
+          }}
+          justifyContent={"flex-end"}
+        >
           <AddIcon
             onClick={handleOpen}
             sx={{
@@ -183,20 +205,30 @@ const Home = ({ allData, setAllData }) => {
             },
           }}
         >
-          <DialogTitle id="alert-dialog-title">Add Data</DialogTitle>
-          <DialogContent>
-            <Box>
-              <Typography color="#fff">
+          <Box
+            sx={{
+              mx: "auto",
+              width: { xs: "100%", sm: "90%", md: "80%" },
+              p: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px 0px",
+              boxSizing: "border-box",
+            }}
+          >
+            <Box sx={{ width: "100%" }}>
+              <Typography color="#fff" fontWeight="bold">
                 <span style={{ color: "red" }}>*</span> Name
               </Typography>
               <input
-                value={data.text}
+                required
                 onChange={(e) =>
                   setData({
                     ...data,
                     text: e.target.value,
                   })
                 }
+                value={data.text}
                 style={{
                   ...inputStyle,
                   border: "2px solid gray",
@@ -206,10 +238,11 @@ const Home = ({ allData, setAllData }) => {
               />
             </Box>
             <Box>
-              <Typography color="#fff">
+              <Typography color="#fff" fontWeight="bold">
                 <span style={{ color: "red" }}>*</span> Description
               </Typography>
               <input
+                required
                 onChange={(e) =>
                   setData({
                     ...data,
@@ -220,15 +253,31 @@ const Home = ({ allData, setAllData }) => {
                 style={{
                   ...inputStyle,
                   border: "2px solid gray",
+                  required: true,
                 }}
                 type="text"
                 placeholder={"Description"}
               />
             </Box>
-            <Button type="submit" onClick={handleData}>
-              Submit
+            <Button
+              onClick={handleData}
+              sx={{
+                background: "#BE375F",
+                color: "#fff",
+                borderRadius: "10px",
+                height: "50px",
+                fontWeight: "bold",
+                border: "2px solid #BE375F",
+                width: "100%",
+                "&:hover": {
+                  border: "2px solid #BE375F",
+                  fontWeight: "bold",
+                },
+              }}
+            >
+              Add Note
             </Button>
-          </DialogContent>
+          </Box>
         </Dialog>
       </div>
     </>
