@@ -6,9 +6,9 @@ import {
   DialogTitle,
   Typography,
 } from "@mui/material";
-import * as React from "react";
+import { useState } from "react";
 
-export const inputStyle = {
+const inputStyle = {
   background: "#504982",
   height: "40px",
   border: "3px solid rgba(82, 89, 96, 0.26)",
@@ -25,13 +25,25 @@ export const inputStyle = {
   paddingTop: "10px",
   paddingBottom: "10px",
 };
-const Modal = () => {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+// eslint-disable-next-line react/prop-types
+const Modal = ({ handleClose, open, allData, setAllData }) => {
+  const [data, setData] = useState({
+    id: Math.random().toString(),
+    data: new Date().toDateString(),
+    text: "",
+    body: "",
+  });
+
+  const handleData = (e) => {
+    e.preventDefault();
+    setAllData([...allData, data]);
+    setData({
+      text: "",
+      body: "",
+    });
+  };
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -45,15 +57,20 @@ const Modal = () => {
           },
         }}
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">Add Data</DialogTitle>
         <DialogContent>
           <Box>
             <Typography color="#fff">
               <span style={{ color: "red" }}>*</span> Name
             </Typography>
             <input
+              value={data.text}
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  text: e.target.value,
+                })
+              }
               style={{
                 ...inputStyle,
                 border: "2px solid gray",
@@ -67,6 +84,13 @@ const Modal = () => {
               <span style={{ color: "red" }}>*</span> Description
             </Typography>
             <input
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  body: e.target.value,
+                })
+              }
+              value={data.body}
               style={{
                 ...inputStyle,
                 border: "2px solid gray",
@@ -75,6 +99,9 @@ const Modal = () => {
               placeholder={"Description"}
             />
           </Box>
+          <Button type="submit" onClick={handleData}>
+            Submit
+          </Button>
         </DialogContent>
       </Dialog>
     </div>
