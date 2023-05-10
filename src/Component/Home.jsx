@@ -26,37 +26,36 @@ const inputStyle = {
 // eslint-disable-next-line react/prop-types
 const Home = ({ allData, setAllData }) => {
   const [data, setData] = useState({
-    id: Math.random().toString() + new Date().getMinutes().toString(),
+    id: Math.floor(Math.random() * 10000),
     data: new Date().toDateString(),
     text: "",
     body: "",
   });
 
-  const [editId, setEditData] = useState(0);
+  //   const [editId, setEditData] = useState(0);
+  //   const handleEditData = () => {
+  //     const newData = allData.map((item) => {
+  //       if (item.id === editId) {
+  //         return {
+  //           ...item,
+  //           text: data.text,
+  //           body: data.body,
+  //         };
+  //       }
+  //       return item;
+  //     });
+  //     setAllData(newData);
+  //     setEditData("");
+  //     handleCloseEdit();
+  //   };
   const handleData = (e) => {
     e.preventDefault();
-    if (editId > 0) {
-      const newData = allData.map((item) => {
-        if (item.id === editId) {
-          return {
-            ...item,
-            text: data.text,
-            body: data.body,
-          };
-        }
-        return item;
-      });
-      setAllData(newData);
-      //   handleClose();
-      setEditData("");
-    } else if (editId === 0) {
-      setAllData([...allData, data]);
-      //   handleClose();
-    }
+    setAllData([...allData, data]);
     setData({
       text: "",
       body: "",
     });
+    handleClose();
   };
   const removeData = (id) => {
     const newData = allData.filter((item) => item.id !== id);
@@ -65,15 +64,18 @@ const Home = ({ allData, setAllData }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  //   const [openEdit, setOpenEdit] = useState(false);
+  //   const handleOpenEdit = () => setOpenEdit(true);
+  //   const handleCloseEdit = () => setOpenEdit(false);
 
-  const editContent = (id) => {
-    const editTodo = allData.find((item) => item.id === id);
-    setEditData(id);
-    if (editTodo) {
-      setOpen(true);
-      setData(editTodo);
-    }
-  };
+  //   const editContent = (id) => {
+  //     const editTodo = allData.find((item) => item.id === id);
+  //     setEditData(id);
+  //     if (editTodo) {
+  //       handleOpenEdit();
+  //       setData(editTodo);
+  //     }
+  //   };
   //   const handleClick = (id) => {
   //     navigate(`/details/${id}`);
   //   };
@@ -87,8 +89,15 @@ const Home = ({ allData, setAllData }) => {
               width: "600px",
               borderRadius: 4,
               mt: 12,
+
               border: "1px solid gray",
-              minHeight: { xs: "60vh", md: "75vh" },
+              height: { xs: "60vh", md: "75vh" },
+              //react scroll working but no show
+              overflow: "auto",
+              //   overflowX: "hidden",
+              "&::-webkit-scrollbar": {
+                width: "0.4em",
+              },
             }}
           >
             <Typography
@@ -111,7 +120,7 @@ const Home = ({ allData, setAllData }) => {
                       background: "#0D1117",
                       p: 3,
                       mx: 2,
-                      mt: 2,
+                      my: 2,
                       cursor: "pointer",
                       display: "flex",
                       justifyContent: "space-between",
@@ -132,7 +141,7 @@ const Home = ({ allData, setAllData }) => {
                     <Box>
                       <EditIcon
                         onClick={() => {
-                          editContent(id);
+                          //   editContent(id);
                         }}
                       >
                         Edit
@@ -216,70 +225,154 @@ const Home = ({ allData, setAllData }) => {
               boxSizing: "border-box",
             }}
           >
-            <Box sx={{ width: "100%" }}>
-              <Typography color="#fff" fontWeight="bold">
-                <span style={{ color: "red" }}>*</span> Name
-              </Typography>
-              <input
-                required
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    text: e.target.value,
-                  })
-                }
-                value={data.text}
-                style={{
-                  ...inputStyle,
-                  border: "2px solid gray",
-                }}
-                type="text"
-                placeholder={"Enter your Title"}
-              />
-            </Box>
-            <Box>
-              <Typography color="#fff" fontWeight="bold">
-                <span style={{ color: "red" }}>*</span> Description
-              </Typography>
-              <input
-                required
-                onChange={(e) =>
-                  setData({
-                    ...data,
-                    body: e.target.value,
-                  })
-                }
-                value={data.body}
-                style={{
-                  ...inputStyle,
-                  border: "2px solid gray",
-                  required: true,
-                }}
-                type="text"
-                placeholder={"Description"}
-              />
-            </Box>
-            <Button
-              onClick={handleData}
-              sx={{
-                background: "#BE375F",
-                color: "#fff",
-                borderRadius: "10px",
-                height: "50px",
-                fontWeight: "bold",
-                border: "2px solid #BE375F",
-                width: "100%",
-                "&:hover": {
-                  border: "2px solid #BE375F",
-                  fontWeight: "bold",
-                },
+            <form
+              onSubmit={handleData}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px 0px",
               }}
             >
-              Add Note
-            </Button>
+              <Box sx={{ width: "100%" }}>
+                <Typography color="#fff" fontWeight="bold">
+                  <span style={{ color: "red" }}>*</span> Name
+                </Typography>
+                <input
+                  required
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      text: e.target.value,
+                    })
+                  }
+                  value={data.text}
+                  style={{
+                    ...inputStyle,
+                    border: "2px solid gray",
+                  }}
+                  type="text"
+                  placeholder={"Enter your Title"}
+                />
+              </Box>
+              <Box>
+                <Typography color="#fff" fontWeight="bold">
+                  <span style={{ color: "red" }}>*</span> Description
+                </Typography>
+                <input
+                  required
+                  onChange={(e) =>
+                    setData({
+                      ...data,
+                      body: e.target.value,
+                    })
+                  }
+                  value={data.body}
+                  style={{
+                    ...inputStyle,
+                    border: "2px solid gray",
+                    required: true,
+                  }}
+                  type="text"
+                  placeholder={"Description"}
+                />
+              </Box>
+              <Button
+                type="submit"
+                sx={{
+                  background: "#BE375F",
+                  color: "#fff",
+                  borderRadius: "10px",
+                  height: "50px",
+                  fontWeight: "bold",
+                  border: "2px solid #BE375F",
+                  width: "100%",
+                  "&:hover": {
+                    border: "2px solid #BE375F",
+                    fontWeight: "bold",
+                  },
+                }}
+              >
+                Add Note
+              </Button>
+            </form>
           </Box>
         </Dialog>
       </div>
+      {/* ///EDIT MODEL */}{" "}
+      {/* <Dialog
+        open={openEdit}
+        onClose={handleCloseEdit}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        sx={{
+          "& .MuiDialog-paper": {
+            background: "#0D1117",
+            border: "1px solid gray",
+            borderRadius: "10px",
+
+            width: "95%",
+            py: 5,
+            // mx:auto
+          },
+        }}
+      >
+        <Box
+          sx={{
+            mx: "auto",
+            width: { xs: "100%", sm: "90%", md: "80%" },
+            p: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px 0px",
+            boxSizing: "border-box",
+          }}
+        >
+          <Box sx={{ width: "100%" }}>
+            <Typography color="#fff" fontWeight="bold">
+              <span style={{ color: "red" }}>*</span> Name
+            </Typography>
+            <input
+              required
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  text: e.target.value,
+                })
+              }
+              value={data.text}
+              style={{
+                ...inputStyle,
+                border: "2px solid gray",
+              }}
+              type="text"
+              placeholder={"Enter your Title"}
+            />
+          </Box>
+          <Box>
+            <Typography color="#fff" fontWeight="bold">
+              <span style={{ color: "red" }}>*</span> Description
+            </Typography>
+            <input
+              required
+              onChange={(e) =>
+                setData({
+                  ...data,
+                  body: e.target.value,
+                })
+              }
+              value={data.body}
+              style={{
+                ...inputStyle,
+                border: "2px solid gray",
+                required: true,
+              }}
+              type="text"
+              placeholder={"Description"}
+            />
+          </Box>
+          <Button onClick={handleEditData}>Update</Button>
+        </Box>
+      </Dialog> */}
     </>
   );
 };
