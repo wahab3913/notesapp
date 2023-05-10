@@ -3,6 +3,8 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import Modal from "./modal";
 import { useNavigate } from "react-router-dom";
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -58,9 +60,18 @@ const Home = () => {
                   >
                     <Typography fontSize={"24px"}>{text}</Typography>
                     <Typography fontSize={"16px"}>{body}</Typography>
-                    {/* <Button>
-                      <Typography fontSize={"16px"}>Edit</Typography>
-                    </Button> */}
+                    <Box
+                      onClick={() => navigate("/")}
+                      display="flex"
+                      alignItems="center"
+                      gap={2}
+                      py={1}
+                      width="max-content"
+                      sx={{ textDecoration: "none", cursor: "pointer" }}
+                    >
+                      <AddIcon />
+                      <EditIcon />
+                    </Box>
                   </Box>
                 );
               })
