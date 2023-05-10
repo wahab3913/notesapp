@@ -1,9 +1,25 @@
 import React from "react";
 import { Container, Typography, Box } from "@mui/material";
+import { useParams, useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Details = () => {
+  let { id } = useParams();
+  const navigate = useNavigate();
   return (
     <Container maxWidth="lg">
+      <Box
+        onClick={() => navigate("/")}
+        display="flex"
+        alignItems="center"
+        gap={2}
+        py={4}
+        width="max-content"
+        sx={{ textDecoration: "none", cursor: "pointer" }}
+      >
+        <ArrowBackIcon />
+        <Typography> Home </Typography>
+      </Box>
       <Box
         sx={{
           background: "#1F1F1F",

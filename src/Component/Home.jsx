@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import {
   Box,
   Button,
@@ -27,7 +28,8 @@ const inputStyle = {
   paddingBottom: "10px",
   // opacity:"0.6"
 };
-const Home = () => {
+// eslint-disable-next-line react/prop-types
+const Home = ({ allData, setAllData }) => {
   const [data, setData] = useState({
     id: Math.random().toString(),
     data: new Date().toDateString(),
@@ -67,7 +69,6 @@ const Home = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [allData, setAllData] = useState([]);
 
   const editContent = (id) => {
     const editTodo = allData.find((item) => item.id === id);
@@ -77,6 +78,9 @@ const Home = () => {
       setData(editTodo);
     }
   };
+  //   const handleClick = (id) => {
+  //     navigate(`/details/${id}`);
+  //   };
   return (
     <>
       <Container maxWidth="md">
@@ -105,12 +109,14 @@ const Home = () => {
                 return (
                   <Box
                     key={index}
+                    // onClick={() => handleClick(id)}
                     sx={{
                       border: "1px soild white",
                       background: "#0D1117",
                       p: 3,
                       mx: 2,
                       mt: 2,
+                      cursor: "pointer",
                       borderRadius: 1,
                     }}
                   >
