@@ -24,32 +24,35 @@ const inputStyle = {
   // opacity:"0.6"
 };
 // eslint-disable-next-line react/prop-types
+
 const Home = ({ allData, setAllData }) => {
   const [data, setData] = useState({
-    id: Math.floor(Math.random() * 10000),
-    data: new Date().toDateString(),
+    id: "",
+    date: "",
     text: "",
     body: "",
   });
 
-  //   const [editId, setEditData] = useState(0);
-  //   const handleEditData = () => {
-  //     const newData = allData.map((item) => {
-  //       if (item.id === editId) {
-  //         return {
-  //           ...item,
-  //           text: data.text,
-  //           body: data.body,
-  //         };
-  //       }
-  //       return item;
-  //     });
-  //     setAllData(newData);
-  //     setEditData("");
-  //     handleCloseEdit();
-  //   };
+  const [editData, setEditData] = useState("");
+  const handleEditData = (e) => {
+    e.preventDefault();
+    const newData = allData.map((item) => {
+      if (item.id === editData.id) {
+        return {
+          ...item,
+          text: editData.text,
+          body: editData.body,
+        };
+      }
+      return item;
+    });
+    setAllData(newData);
+    setEditData("");
+    handleCloseEdit();
+  };
   const handleData = (e) => {
     e.preventDefault();
+
     setAllData([...allData, data]);
     setData({
       text: "",
@@ -57,6 +60,7 @@ const Home = ({ allData, setAllData }) => {
     });
     handleClose();
   };
+  console.log(allData, "data");
   const removeData = (id) => {
     const newData = allData.filter((item) => item.id !== id);
     setAllData(newData);
@@ -64,18 +68,27 @@ const Home = ({ allData, setAllData }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  //   const [openEdit, setOpenEdit] = useState(false);
-  //   const handleOpenEdit = () => setOpenEdit(true);
-  //   const handleCloseEdit = () => setOpenEdit(false);
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      id: new Date().getTime().toString(),
+      date: new Date().toLocaleDateString(),
+      [name]: value,
+    });
+  };
+  const [openEdit, setOpenEdit] = useState(false);
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
 
-  //   const editContent = (id) => {
-  //     const editTodo = allData.find((item) => item.id === id);
-  //     setEditData(id);
-  //     if (editTodo) {
-  //       handleOpenEdit();
-  //       setData(editTodo);
-  //     }
-  //   };
+  const editContent = (id) => {
+    const editTodo = allData.find((item) => item.id === id);
+    setEditData(id);
+    if (editTodo) {
+      handleOpenEdit();
+      setEditData(editTodo);
+    }
+  };
   //   const handleClick = (id) => {
   //     navigate(`/details/${id}`);
   //   };
@@ -141,7 +154,7 @@ const Home = ({ allData, setAllData }) => {
                     <Box>
                       <EditIcon
                         onClick={() => {
-                          //   editContent(id);
+                          editContent(id);
                         }}
                       >
                         Edit
@@ -239,13 +252,9 @@ const Home = ({ allData, setAllData }) => {
                 </Typography>
                 <input
                   required
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      text: e.target.value,
-                    })
-                  }
+                  onChange={handleChangeInput}
                   value={data.text}
+                  name="text"
                   style={{
                     ...inputStyle,
                     border: "2px solid gray",
@@ -260,13 +269,9 @@ const Home = ({ allData, setAllData }) => {
                 </Typography>
                 <input
                   required
-                  onChange={(e) =>
-                    setData({
-                      ...data,
-                      body: e.target.value,
-                    })
-                  }
+                  onChange={handleChangeInput}
                   value={data.body}
+                  name="body"
                   style={{
                     ...inputStyle,
                     border: "2px solid gray",
@@ -299,7 +304,7 @@ const Home = ({ allData, setAllData }) => {
         </Dialog>
       </div>
       {/* ///EDIT MODEL */}{" "}
-      {/* <Dialog
+      <Dialog
         open={openEdit}
         onClose={handleCloseEdit}
         aria-labelledby="alert-dialog-title"
@@ -327,52 +332,78 @@ const Home = ({ allData, setAllData }) => {
             boxSizing: "border-box",
           }}
         >
-          <Box sx={{ width: "100%" }}>
-            <Typography color="#fff" fontWeight="bold">
-              <span style={{ color: "red" }}>*</span> Name
-            </Typography>
-            <input
-              required
-              onChange={(e) =>
-                setData({
-                  ...data,
-                  text: e.target.value,
-                })
-              }
-              value={data.text}
-              style={{
-                ...inputStyle,
-                border: "2px solid gray",
+          <form
+            onSubmit={handleEditData}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px 0px",
+            }}
+          >
+            <Box sx={{ width: "100%" }}>
+              <Typography color="#fff" fontWeight="bold">
+                <span style={{ color: "red" }}>*</span> Name
+              </Typography>
+              <input
+                required
+                onChange={(e) =>
+                  setEditData({
+                    ...editData,
+                    text: e.target.value,
+                  })
+                }
+                value={editData.text}
+                style={{
+                  ...inputStyle,
+                  border: "2px solid gray",
+                }}
+                type="text"
+                placeholder={"Enter your Title"}
+              />
+            </Box>
+            <Box>
+              <Typography color="#fff" fontWeight="bold">
+                <span style={{ color: "red" }}>*</span> Description
+              </Typography>
+              <input
+                required
+                onChange={(e) =>
+                  setEditData({
+                    ...editData,
+                    body: e.target.value,
+                  })
+                }
+                value={editData.body}
+                style={{
+                  ...inputStyle,
+                  border: "2px solid gray",
+                  required: true,
+                }}
+                type="text"
+                placeholder={"Description"}
+              />
+            </Box>
+            <Button
+              type="submit"
+              sx={{
+                background: "#BE375F",
+                color: "#fff",
+                borderRadius: "10px",
+                height: "50px",
+                fontWeight: "bold",
+                border: "2px solid #BE375F",
+                width: "100%",
+                "&:hover": {
+                  border: "2px solid #BE375F",
+                  fontWeight: "bold",
+                },
               }}
-              type="text"
-              placeholder={"Enter your Title"}
-            />
-          </Box>
-          <Box>
-            <Typography color="#fff" fontWeight="bold">
-              <span style={{ color: "red" }}>*</span> Description
-            </Typography>
-            <input
-              required
-              onChange={(e) =>
-                setData({
-                  ...data,
-                  body: e.target.value,
-                })
-              }
-              value={data.body}
-              style={{
-                ...inputStyle,
-                border: "2px solid gray",
-                required: true,
-              }}
-              type="text"
-              placeholder={"Description"}
-            />
-          </Box>
-          <Button onClick={handleEditData}>Update</Button>
+            >
+              Update
+            </Button>
+          </form>
         </Box>
-      </Dialog> */}
+      </Dialog>
     </>
   );
 };
