@@ -1,8 +1,21 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Container, Dialog, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import {
+  Box,
+  Button,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from "@mui/material";
+
 import { useState } from "react";
-import EditIcon from "@mui/icons-material/Edit";
+import Modal from "./modal";
+import { useNavigate } from "react-router-dom";
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -26,6 +39,9 @@ const inputStyle = {
 // eslint-disable-next-line react/prop-types
 
 const Home = ({ allData, setAllData }) => {
+
+const navigate =useNavigate()
+
   const [data, setData] = useState({
     id: "",
     date: "",
@@ -89,9 +105,9 @@ const Home = ({ allData, setAllData }) => {
       setEditData(editTodo);
     }
   };
-  //   const handleClick = (id) => {
-  //     navigate(`/details/${id}`);
-  //   };
+    const handleClick = (id) => {
+      navigate(`/details/${id}`);
+    };
   return (
     <>
       <Container maxWidth="md">
@@ -127,7 +143,7 @@ const Home = ({ allData, setAllData }) => {
                 return (
                   <Box
                     key={index}
-                    // onClick={() => handleClick(id)}
+                    
                     sx={{
                       border: "1px soild white",
                       background: "#0D1117",
@@ -170,6 +186,18 @@ const Home = ({ allData, setAllData }) => {
                       >
                         delete
                       </DeleteIcon>
+                      <ArrowOutwardIcon
+                      
+                      sx={{
+                        color: "red",
+                        mx: 2,
+                      }}
+                      onClick={() => {
+                        handleClick(id);
+                      }}
+                      >
+
+                      </ArrowOutwardIcon>
                     </Box>
                   </Box>
                 );
