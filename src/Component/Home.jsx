@@ -1,25 +1,15 @@
 /* eslint-disable react/prop-types */
-import {
-  Box,
-  Button,
-  Container,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Dialog, Typography } from "@mui/material";
 
 import { useState } from "react";
-import Modal from "./modal";
+
 import { useNavigate } from "react-router-dom";
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import { Add, Edit, ArrowOutward, Delete } from "@mui/icons-material";
 
+import Modal from "./modal";
 
-import DeleteIcon from "@mui/icons-material/Delete";
-
-const inputStyle = {
+// eslint-disable-next-line react-refresh/only-export-components
+export const inputStyle = {
   background: "#181B24",
   height: "35px",
   border: "3px solid rgba(82, 89, 96, 0.26)",
@@ -39,17 +29,17 @@ const inputStyle = {
 // eslint-disable-next-line react/prop-types
 
 const Home = ({ allData, setAllData }) => {
-
-const navigate =useNavigate()
-
-  const [data, setData] = useState({
-    id: "",
-    date: "",
-    text: "",
-    body: "",
-  });
-
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState("");
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const handleOpenEdit = () => setOpenEdit(true);
+  const handleCloseEdit = () => setOpenEdit(false);
+
   const handleEditData = (e) => {
     e.preventDefault();
     const newData = allData.map((item) => {
@@ -66,36 +56,11 @@ const navigate =useNavigate()
     setEditData("");
     handleCloseEdit();
   };
-  const handleData = (e) => {
-    e.preventDefault();
 
-    setAllData([...allData, data]);
-    setData({
-      text: "",
-      body: "",
-    });
-    handleClose();
-  };
-  console.log(allData, "data");
   const removeData = (id) => {
     const newData = allData.filter((item) => item.id !== id);
     setAllData(newData);
   };
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleChangeInput = (e) => {
-    const { name, value } = e.target;
-    setData({
-      ...data,
-      id: new Date().getTime().toString(),
-      date: new Date().toLocaleDateString(),
-      [name]: value,
-    });
-  };
-  const [openEdit, setOpenEdit] = useState(false);
-  const handleOpenEdit = () => setOpenEdit(true);
-  const handleCloseEdit = () => setOpenEdit(false);
 
   const editContent = (id) => {
     const editTodo = allData.find((item) => item.id === id);
@@ -105,9 +70,9 @@ const navigate =useNavigate()
       setEditData(editTodo);
     }
   };
-    const handleClick = (id) => {
-      navigate(`/details/${id}`);
-    };
+  const handleClick = (id) => {
+    navigate(`/details/${id}`);
+  };
   return (
     <>
       <Container maxWidth="md">
@@ -143,9 +108,7 @@ const navigate =useNavigate()
                 return (
                   <Box
                     key={index}
-                    
                     sx={{
-                      border: "1px soild white",
                       background: "#0D1117",
                       p: 3,
                       mx: 2,
@@ -154,11 +117,14 @@ const navigate =useNavigate()
                       display: "flex",
                       justifyContent: "space-between",
                       borderRadius: 1,
+                      "&:hover": {
+                        border: "1px solid rgba(82, 89, 96, 0.26) !important",
+                      },
                     }}
                   >
                     <Box
                       sx={{
-                        width: "200px",
+                        width: { xs: "100px", md: "200px" },
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
@@ -168,14 +134,14 @@ const navigate =useNavigate()
                       <Typography fontSize={"16px"}>{body}</Typography>
                     </Box>
                     <Box>
-                      <EditIcon
+                      <Edit
                         onClick={() => {
                           editContent(id);
                         }}
                       >
                         Edit
-                      </EditIcon>
-                      <DeleteIcon
+                      </Edit>
+                      <Delete
                         sx={{
                           color: "red",
                           mx: 2,
@@ -185,26 +151,22 @@ const navigate =useNavigate()
                         }}
                       >
                         delete
-                      </DeleteIcon>
-                      <ArrowOutwardIcon
-                      
-                      sx={{
-                        color: "red",
-                        mx: 2,
-                      }}
-                      onClick={() => {
-                        handleClick(id);
-                      }}
-                      >
-
-                      </ArrowOutwardIcon>
+                      </Delete>
+                      <ArrowOutward
+                        sx={{
+                          color: "red",
+                        }}
+                        onClick={() => {
+                          handleClick(id);
+                        }}
+                      ></ArrowOutward>
                     </Box>
                   </Box>
                 );
               })
             ) : (
               <Typography textAlign={"center"} mt={2}>
-                No Data Found
+                No Note
               </Typography>
             )}
           </Box>
@@ -219,7 +181,7 @@ const navigate =useNavigate()
           }}
           justifyContent={"flex-end"}
         >
-          <AddIcon
+          <Add
             onClick={handleOpen}
             sx={{
               fontSize: "40px",
@@ -238,100 +200,14 @@ const navigate =useNavigate()
         </Box>
       </Container>
       <div>
-        <Dialog
+        <Modal
           open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-          sx={{
-            "& .MuiDialog-paper": {
-              background: "#0D1117",
-              border: "1px solid gray",
-              borderRadius: "10px",
-
-              width: "95%",
-              py: 5,
-              // mx:auto
-            },
-          }}
-        >
-          <Box
-            sx={{
-              mx: "auto",
-              width: { xs: "100%", sm: "90%", md: "80%" },
-              p: 1,
-              display: "flex",
-              flexDirection: "column",
-              gap: "20px 0px",
-              boxSizing: "border-box",
-            }}
-          >
-            <form
-              onSubmit={handleData}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "20px 0px",
-              }}
-            >
-              <Box sx={{ width: "100%" }}>
-                <Typography color="#fff" fontWeight="bold">
-                  <span style={{ color: "red" }}>*</span> Name
-                </Typography>
-                <input
-                  required
-                  onChange={handleChangeInput}
-                  value={data.text}
-                  name="text"
-                  style={{
-                    ...inputStyle,
-                    border: "2px solid gray",
-                  }}
-                  type="text"
-                  placeholder={"Enter your Title"}
-                />
-              </Box>
-              <Box>
-                <Typography color="#fff" fontWeight="bold">
-                  <span style={{ color: "red" }}>*</span> Description
-                </Typography>
-                <input
-                  required
-                  onChange={handleChangeInput}
-                  value={data.body}
-                  name="body"
-                  style={{
-                    ...inputStyle,
-                    border: "2px solid gray",
-                    required: true,
-                  }}
-                  type="text"
-                  placeholder={"Description"}
-                />
-              </Box>
-              <Button
-                type="submit"
-                sx={{
-                  background: "#BE375F",
-                  color: "#fff",
-                  borderRadius: "10px",
-                  height: "50px",
-                  fontWeight: "bold",
-                  border: "2px solid #BE375F",
-                  width: "100%",
-                  "&:hover": {
-                    border: "2px solid #BE375F",
-                    fontWeight: "bold",
-                  },
-                }}
-              >
-                Add Note
-              </Button>
-            </form>
-          </Box>
-        </Dialog>
+          handleClose={handleClose}
+          allData={allData}
+          setAllData={setAllData}
+        />
       </div>
-      {/* ///EDIT MODEL */}{" "}
+
       <Dialog
         open={openEdit}
         onClose={handleCloseEdit}

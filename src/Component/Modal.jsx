@@ -1,47 +1,35 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Dialog, Typography } from "@mui/material";
 import { useState } from "react";
+import { inputStyle } from "./Home";
 
-const inputStyle = {
-  background: "#504982",
-  height: "40px",
-  border: "3px solid rgba(82, 89, 96, 0.26)",
-  borderRadius: "18px",
-  outline: "none",
-  paddingLeft: "16px",
-  paddingRight: "16px",
-  fontSize: "17px",
-  fontFamily: "Open Sans",
-  fontWight: 400,
-  width: "60%",
-  color: "#fff",
-  flexBasis: "100%",
-  paddingTop: "10px",
-  paddingBottom: "10px",
-};
 // eslint-disable-next-line react/prop-types
 const Modal = ({ handleClose, open, allData, setAllData }) => {
   const [data, setData] = useState({
-    id: Math.random().toString(),
-    data: new Date().toDateString(),
+    id: "",
+    date: "",
     text: "",
     body: "",
   });
-
   const handleData = (e) => {
     e.preventDefault();
+
     setAllData([...allData, data]);
     setData({
       text: "",
       body: "",
     });
+    handleClose();
   };
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      id: new Date().getTime().toString(),
+      date: new Date().toLocaleDateString(),
+      [name]: value,
+    });
+  };
+
   return (
     <div>
       <Dialog
@@ -53,56 +41,88 @@ const Modal = ({ handleClose, open, allData, setAllData }) => {
           "& .MuiDialog-paper": {
             background: "#0D1117",
             border: "1px solid gray",
-            width: "100%",
+            borderRadius: "10px",
+
+            width: "95%",
+            py: 5,
+            // mx:auto
           },
         }}
       >
-        <DialogTitle id="alert-dialog-title">Add Data</DialogTitle>
-        <DialogContent>
-          <Box>
-            <Typography color="#fff">
-              <span style={{ color: "red" }}>*</span> Name
-            </Typography>
-            <input
-              value={data.text}
-              onChange={(e) =>
-                setData({
-                  ...data,
-                  text: e.target.value,
-                })
-              }
-              style={{
-                ...inputStyle,
-                border: "2px solid gray",
+        <Box
+          sx={{
+            mx: "auto",
+            width: { xs: "100%", sm: "90%", md: "80%" },
+            p: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px 0px",
+            boxSizing: "border-box",
+          }}
+        >
+          <form
+            onSubmit={handleData}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px 0px",
+            }}
+          >
+            <Box sx={{ width: "100%" }}>
+              <Typography color="#fff" fontWeight="bold">
+                <span style={{ color: "red" }}>*</span> Name
+              </Typography>
+              <input
+                required
+                onChange={handleChangeInput}
+                value={data.text}
+                name="text"
+                style={{
+                  ...inputStyle,
+                  border: "2px solid gray",
+                }}
+                type="text"
+                placeholder={"Enter your Title"}
+              />
+            </Box>
+            <Box>
+              <Typography color="#fff" fontWeight="bold">
+                <span style={{ color: "red" }}>*</span> Description
+              </Typography>
+              <input
+                required
+                onChange={handleChangeInput}
+                value={data.body}
+                name="body"
+                style={{
+                  ...inputStyle,
+                  border: "2px solid gray",
+                  required: true,
+                }}
+                type="text"
+                placeholder={"Description"}
+              />
+            </Box>
+            <Button
+              type="submit"
+              sx={{
+                background: "#BE375F",
+                color: "#fff",
+                borderRadius: "10px",
+                height: "50px",
+                fontWeight: "bold",
+                border: "2px solid #BE375F",
+                width: "100%",
+                "&:hover": {
+                  border: "2px solid #BE375F",
+                  fontWeight: "bold",
+                },
               }}
-              type="text"
-              placeholder={"Enter your Title"}
-            />
-          </Box>
-          <Box>
-            <Typography color="#fff">
-              <span style={{ color: "red" }}>*</span> Description
-            </Typography>
-            <input
-              onChange={(e) =>
-                setData({
-                  ...data,
-                  body: e.target.value,
-                })
-              }
-              value={data.body}
-              style={{
-                ...inputStyle,
-                border: "2px solid gray",
-              }}
-              type="text"
-              placeholder={"Description"}
-            />
-          </Box>
-          <Button type="submit" onClick={handleData}>
-            Submit
-          </Button>
-        </DialogContent>
+            >
+              Add Note
+            </Button>
+          </form>
+        </Box>
       </Dialog>
     </div>
   );

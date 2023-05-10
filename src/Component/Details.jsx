@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { Container, Typography, Box } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
@@ -5,15 +6,15 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Details = ({ allData }) => {
   let { id } = useParams();
-  const [detail,setDetail]=React.useState(null)
+  const [detail, setDetail] = React.useState(null);
   const navigate = useNavigate();
-React.useEffect(()=>{
+  React.useEffect(() => {
     const itemData = allData.find((item) => {
-        return item.id.toString() === id.toString();
-      });
-      setDetail(itemData)
-},[id])
-  
+      return item.id.toString() === id.toString();
+    });
+    setDetail(itemData);
+  }, [id, allData]);
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -59,7 +60,7 @@ React.useEffect(()=>{
                 color: "#FFFFFF",
               }}
             >
-              Title:{detail?detail.text:".."}
+              Title:{detail ? detail.text : ".."}
             </Typography>
 
             <Typography
@@ -70,7 +71,7 @@ React.useEffect(()=>{
                 color: "#FFFFFF",
               }}
             >
-              Date:{detail?detail.data:".."}
+              Date:{detail ? detail.date : ".."}
             </Typography>
           </Box>
           <Typography
@@ -81,7 +82,7 @@ React.useEffect(()=>{
               color: "#FFFFFF",
             }}
           >
-            Description:{detail?detail.body:".."}
+            Description:{detail ? detail.body : ".."}
           </Typography>
         </Box>
       </Box>
