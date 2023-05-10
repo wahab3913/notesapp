@@ -1,24 +1,93 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+/* eslint-disable react/prop-types */
+import {
+  Box,
+  Button,
+  Container,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Typography,
+} from "@mui/material";
+
 import { useState } from "react";
 import Modal from "./modal";
 import { useNavigate } from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 
-const Home = () => {
-  const navigate = useNavigate();
+const inputStyle = {
+  background: "#181B24",
+  height: "35px",
+  border: "3px solid rgba(82, 89, 96, 0.26)",
+  borderRadius: "8px",
+  outline: "none",
+  paddingLeft: "6px",
+  fontSize: "17px",
+  fontFamily: "Open Sans",
+  fontWight: 400,
+  width: "97%",
+  color: "#fff",
+  flexBasis: "100%",
+  paddingTop: "10px",
+  paddingBottom: "10px",
+  // opacity:"0.6"
+};
+// eslint-disable-next-line react/prop-types
+const Home = ({ allData, setAllData }) => {
+
+const navigate =useNavigate()
+
+  const [data, setData] = useState({
+    id: Math.random().toString(),
+    data: new Date().toDateString(),
+    text: "",
+    body: "",
+  });
+
+  const [editId, setEditData] = useState(0);
+  const handleData = (e) => {
+    e.preventDefault();
+    if (editId > 0) {
+      const newData = allData.map((item) => {
+        if (item.id === editId) {
+          return {
+            ...item,
+            text: data.text,
+            body: data.body,
+          };
+        }
+        return item;
+      });
+      setAllData(newData);
+      setEditData("");
+    } else if (editId === 0) {
+      setAllData([...allData, data]);
+    }
+    setData({
+      text: "",
+      body: "",
+    });
+    handleClose();
+  };
+  const removeData = (id) => {
+    const newData = allData.filter((item) => item.id !== id);
+    setAllData(newData);
+  };
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [allData, setAllData] = useState([]);
-  console.log(allData, "data");
-  const editContent = () => {
-    console.log("edit");
+
+  const editContent = (id) => {
+    const editTodo = allData.find((item) => item.id === id);
+    setEditData(id);
+    if (editTodo) {
+      setOpen(true);
+      setData(editTodo);
+    }
   };
-  const handleClick = (id) => {
-    navigate(`/details/${id}`);
-  };
+    const handleClick = (id) => {
+      navigate(`/details/${id}`);
+    };
   return (
     <>
       <Container maxWidth="md">
@@ -47,7 +116,7 @@ const Home = () => {
                 return (
                   <Box
                     key={index}
-                    onClick={() => handleClick(id)}
+                    
                     sx={{
                       border: "1px soild white",
                       background: "#0D1117",
@@ -60,18 +129,21 @@ const Home = () => {
                   >
                     <Typography fontSize={"24px"}>{text}</Typography>
                     <Typography fontSize={"16px"}>{body}</Typography>
-                    <Box
-                      onClick={() => navigate("/")}
-                      display="flex"
-                      alignItems="center"
-                      gap={2}
-                      py={1}
-                      width="max-content"
-                      sx={{ textDecoration: "none", cursor: "pointer" }}
+                    <Button
+                      onClick={() => {
+                        editContent(id);
+                      }}
                     >
-                      <AddIcon />
-                      <EditIcon />
-                    </Box>
+                      Edit
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        removeData(id);
+                      }}
+                    >
+                      delete
+                    </Button>
+                    <Button onClick={() => handleClick(id)}>Detail</Button>
                   </Box>
                 );
               })
@@ -101,14 +173,72 @@ const Home = () => {
           />
         </Box>
       </Container>
-      <Modal
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-        open={open}
-        setOpen={setOpen}
-        setAllData={setAllData}
-        allData={allData}
-      />
+      <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          sx={{
+            "& .MuiDialog-paper": {
+              background: "#0D1117",
+              border: "1px solid gray",
+              borderRadius: "10px",
+
+              width: "95%",
+              py: 5,
+              // mx:auto
+            },
+          }}
+        >
+          <DialogTitle id="alert-dialog-title">Add Data</DialogTitle>
+          <DialogContent>
+            <Box>
+              <Typography color="#fff">
+                <span style={{ color: "red" }}>*</span> Name
+              </Typography>
+              <input
+                value={data.text}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    text: e.target.value,
+                  })
+                }
+                style={{
+                  ...inputStyle,
+                  border: "2px solid gray",
+                }}
+                type="text"
+                placeholder={"Enter your Title"}
+              />
+            </Box>
+            <Box>
+              <Typography color="#fff">
+                <span style={{ color: "red" }}>*</span> Description
+              </Typography>
+              <input
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    body: e.target.value,
+                  })
+                }
+                value={data.body}
+                style={{
+                  ...inputStyle,
+                  border: "2px solid gray",
+                }}
+                type="text"
+                placeholder={"Description"}
+              />
+            </Box>
+            <Button type="submit" onClick={handleData}>
+              Submit
+            </Button>
+          </DialogContent>
+        </Dialog>
+      </div>
     </>
   );
 };

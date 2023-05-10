@@ -3,9 +3,17 @@ import { Container, Typography, Box } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const Details = () => {
+const Details = ({ allData }) => {
   let { id } = useParams();
+  const [detail,setDetail]=React.useState(null)
   const navigate = useNavigate();
+React.useEffect(()=>{
+    const itemData = allData.find((item) => {
+        return item.id.toString() === id.toString();
+      });
+      setDetail(itemData)
+},[id])
+  
   return (
     <Container maxWidth="lg">
       <Box
@@ -51,7 +59,7 @@ const Details = () => {
                 color: "#FFFFFF",
               }}
             >
-              Title:
+              Title:{detail?detail.text:".."}
             </Typography>
 
             <Typography
@@ -62,7 +70,7 @@ const Details = () => {
                 color: "#FFFFFF",
               }}
             >
-              Date:
+              Date:{detail?detail.data:".."}
             </Typography>
           </Box>
           <Typography
@@ -73,7 +81,7 @@ const Details = () => {
               color: "#FFFFFF",
             }}
           >
-            Description:
+            Description:{detail?detail.body:".."}
           </Typography>
         </Box>
       </Box>
