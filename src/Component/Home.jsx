@@ -2,8 +2,10 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import Modal from "./modal";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -11,6 +13,9 @@ const Home = () => {
   console.log(allData, "data");
   const editContent = () => {
     console.log("edit");
+  };
+  const handleClick = (id) => {
+    navigate(`/details/${id}`);
   };
   return (
     <>
@@ -40,12 +45,14 @@ const Home = () => {
                 return (
                   <Box
                     key={index}
+                    onClick={() => handleClick(id)}
                     sx={{
                       border: "1px soild white",
                       background: "#0D1117",
                       p: 3,
                       mx: 2,
                       mt: 2,
+                      cursor: "pointer",
                       borderRadius: 1,
                     }}
                   >
