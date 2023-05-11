@@ -33,7 +33,7 @@ const Details = ({ allData }) => {
         sx={{
           background: "#1F1F1F",
           borderRadius: 4,
-          mt: 12,
+          mt: { xs: 4, md: 12 },
           p: 5,
         }}
       >
@@ -41,7 +41,7 @@ const Details = ({ allData }) => {
           sx={{
             border: "1px solid white",
             background: "#0D1117",
-            p: 3,
+            p:  { xs: 2, md: 3 },
           }}
         >
           <Box
@@ -56,7 +56,7 @@ const Details = ({ allData }) => {
               sx={{
                 fontSize: { xs: "18px", md: "24px" },
                 fontWeight: 600,
-                my: 2,
+                my:  { xs: 1, md: 2 },
                 color: "#FFFFFF",
               }}
             >
@@ -65,7 +65,7 @@ const Details = ({ allData }) => {
                 style={{
                   fontSize: { xs: "16px", md: "18px" },
                   fontWeight: 500,
-                  color:"#E8F6EF"
+                  color: "#E8F6EF",
                 }}
               >
                 {detail ? detail.text : ".."}
@@ -76,7 +76,7 @@ const Details = ({ allData }) => {
               sx={{
                 fontSize: { xs: "18px", md: "24px" },
                 fontWeight: 600,
-                my: 2,
+                my:  { xs: 1, md: 2 },
                 color: "#FFFFFF",
               }}
             >
@@ -85,7 +85,7 @@ const Details = ({ allData }) => {
                 style={{
                   fontSize: { xs: "16px", md: "18px" },
                   fontWeight: 500,
-                  color:"#E8F6EF"
+                  color: "#E8F6EF",
                 }}
               >
                 {detail ? detail.date : ".."}
@@ -96,17 +96,16 @@ const Details = ({ allData }) => {
             sx={{
               fontSize: { xs: "18px", md: "24px" },
               fontWeight: 600,
-              my: 2,
+              my:  { xs: 1, md: 2 },
               color: "#FFFFFF",
             }}
           >
             Description : &nbsp;
-          
             <span
               style={{
                 fontSize: { xs: "16px", md: "18px" },
                 fontWeight: 500,
-                color:"#E8F6EF"
+                color: "#E8F6EF",
               }}
             >
               {detail ? detail.body : ".."}
