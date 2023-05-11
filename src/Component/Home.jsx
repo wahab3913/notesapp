@@ -123,11 +123,6 @@ const Home = ({ allData, setAllData }) => {
               borderRadius: 4,
               mt: 12,
               border: "1px solid gray",
-              height: { xs: "60vh", md: "75vh" },
-              overflow: "auto",
-              "&::-webkit-scrollbar": {
-                width: "0.4em",
-              },
             }}
           >
             <Typography
@@ -179,12 +174,22 @@ const Home = ({ allData, setAllData }) => {
               </Box>
             </Box>
             {/* )} */}
-            <Card
-              filteredItems={filteredItems}
-              removeData={removeData}
-              editContent={editContent}
-              handleClick={handleClick}
-            />
+            <Box
+              sx={{
+                height: { xs: "50vh", md: "60vh" },
+                overflow: "auto",
+                "&::-webkit-scrollbar": {
+                  width: "0.4em",
+                },
+              }}
+            >
+              <Card
+                filteredItems={filteredItems}
+                removeData={removeData}
+                editContent={editContent}
+                handleClick={handleClick}
+              />
+            </Box>
           </Box>
         </Box>
         <Box
