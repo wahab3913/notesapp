@@ -22,9 +22,9 @@ input {
   border-radius: 8px;
   outline: none;
   padding-left: 6px;
+  font-size: 17px;
   font-weight: 400;
   width: 100%;
-  font-size: 17px;
   flex-basis: "100%";
   padding-top: 10px;
   padding-bottom: 10px;
