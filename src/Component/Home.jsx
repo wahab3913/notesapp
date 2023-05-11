@@ -26,6 +26,20 @@ export const inputStyle = {
   paddingBottom: "10px",
   // opacity:"0.6"
 };
+// eslint-disable-next-line react-refresh/only-export-components
+export const btnStyle = {
+  background: "#BE375F",
+  color: "#fff",
+  borderRadius: "10px",
+  height: "50px",
+  fontWeight: "bold",
+  border: "2px solid #BE375F",
+  width: "100%",
+  "&:hover": {
+    border: "2px solid #BE375F",
+    fontWeight: "bold",
+  },
+};
 // eslint-disable-next-line react/prop-types
 
 const Home = ({ allData, setAllData }) => {
@@ -83,12 +97,9 @@ const Home = ({ allData, setAllData }) => {
               width: "600px",
               borderRadius: 4,
               mt: 12,
-
               border: "1px solid gray",
               height: { xs: "60vh", md: "75vh" },
-              //react scroll working but no show
               overflow: "auto",
-              //   overflowX: "hidden",
               "&::-webkit-scrollbar": {
                 width: "0.4em",
               },
@@ -218,10 +229,8 @@ const Home = ({ allData, setAllData }) => {
             background: "#0D1117",
             border: "1px solid gray",
             borderRadius: "10px",
-
             width: "95%",
             py: 5,
-            // mx:auto
           },
         }}
       >
@@ -230,9 +239,6 @@ const Home = ({ allData, setAllData }) => {
             mx: "auto",
             width: { xs: "100%", sm: "90%", md: "80%" },
             p: 1,
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px 0px",
             boxSizing: "border-box",
           }}
         >
@@ -287,22 +293,7 @@ const Home = ({ allData, setAllData }) => {
                 placeholder={"Description"}
               />
             </Box>
-            <Button
-              type="submit"
-              sx={{
-                background: "#BE375F",
-                color: "#fff",
-                borderRadius: "10px",
-                height: "50px",
-                fontWeight: "bold",
-                border: "2px solid #BE375F",
-                width: "100%",
-                "&:hover": {
-                  border: "2px solid #BE375F",
-                  fontWeight: "bold",
-                },
-              }}
-            >
+            <Button type="submit" sx={btnStyle}>
               Update
             </Button>
           </form>
