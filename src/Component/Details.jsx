@@ -54,35 +54,63 @@ const Details = ({ allData }) => {
           >
             <Typography
               sx={{
-                fontSize: { xs: "18px", md: "20px" },
+                fontSize: { xs: "18px", md: "24px" },
                 fontWeight: 600,
                 my: 2,
                 color: "#FFFFFF",
               }}
             >
-              Title:{detail ? detail.text : ".."}
+              Title : &nbsp;
+              <span
+                style={{
+                  fontSize: { xs: "16px", md: "18px" },
+                  fontWeight: 500,
+                  color:"#E8F6EF"
+                }}
+              >
+                {detail ? detail.text : ".."}
+              </span>
             </Typography>
 
             <Typography
               sx={{
-                fontSize: { xs: "18px", md: "20px" },
+                fontSize: { xs: "18px", md: "24px" },
                 fontWeight: 600,
                 my: 2,
                 color: "#FFFFFF",
               }}
             >
-              Date:{detail ? detail.date : ".."}
+              Date : &nbsp;
+              <span
+                style={{
+                  fontSize: { xs: "16px", md: "18px" },
+                  fontWeight: 500,
+                  color:"#E8F6EF"
+                }}
+              >
+                {detail ? detail.date : ".."}
+              </span>
             </Typography>
           </Box>
           <Typography
             sx={{
-              fontSize: "20px",
+              fontSize: { xs: "18px", md: "24px" },
               fontWeight: 600,
               my: 2,
               color: "#FFFFFF",
             }}
           >
-            Description:{detail ? detail.body : ".."}
+            Description : &nbsp;
+          
+            <span
+              style={{
+                fontSize: { xs: "16px", md: "18px" },
+                fontWeight: 500,
+                color:"#E8F6EF"
+              }}
+            >
+              {detail ? detail.body : ".."}
+            </span>
           </Typography>
         </Box>
       </Box>
