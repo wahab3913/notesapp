@@ -22,6 +22,7 @@ input {
   border-radius: 8px;
   outline: none;
   padding-left: 6px;
+  font-weight: 400;
   width: 100%;
   font-size: 17px;
   flex-basis: "100%";
@@ -31,14 +32,15 @@ input {
 
 ::-webkit-input-placeholder {
   /* Edge */
-  color: white;
+  color: grey;
+
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer */
-  color: white;
+  color: grey;
 }
 
 ::placeholder {
-  color: white;
+  color: grey;
 }
