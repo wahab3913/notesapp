@@ -1,6 +1,6 @@
 import { Box, Button, Dialog, Typography } from "@mui/material";
 import { useState } from "react";
-import { inputStyle } from "./Home";
+import { btnStyle, inputStyle } from "./Home";
 
 // eslint-disable-next-line react/prop-types
 const Modal = ({ handleClose, open, allData, setAllData }) => {
@@ -42,10 +42,8 @@ const Modal = ({ handleClose, open, allData, setAllData }) => {
             background: "#0D1117",
             border: "1px solid gray",
             borderRadius: "10px",
-
             width: "95%",
             py: 5,
-            // mx:auto
           },
         }}
       >
@@ -54,9 +52,6 @@ const Modal = ({ handleClose, open, allData, setAllData }) => {
             mx: "auto",
             width: { xs: "100%", sm: "90%", md: "80%" },
             p: 1,
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px 0px",
             boxSizing: "border-box",
           }}
         >
@@ -103,22 +98,7 @@ const Modal = ({ handleClose, open, allData, setAllData }) => {
                 placeholder={"Description"}
               />
             </Box>
-            <Button
-              type="submit"
-              sx={{
-                background: "#BE375F",
-                color: "#fff",
-                borderRadius: "10px",
-                height: "50px",
-                fontWeight: "bold",
-                border: "2px solid #BE375F",
-                width: "100%",
-                "&:hover": {
-                  border: "2px solid #BE375F",
-                  fontWeight: "bold",
-                },
-              }}
-            >
+            <Button type="submit" sx={btnStyle}>
               Add Note
             </Button>
           </form>
