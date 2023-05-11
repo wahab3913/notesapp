@@ -135,7 +135,7 @@ const Home = ({ allData, setAllData }) => {
                   >
                     <Box
                       sx={{
-                        width: { xs: "100px", md: "20px" },
+                        width: { xs: "100px", md: "200px" },
                   
                       }}
                     >
