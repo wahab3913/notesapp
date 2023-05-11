@@ -124,14 +124,30 @@ const Home = ({ allData, setAllData }) => {
                   >
                     <Box
                       sx={{
-                        width: { xs: "100px", md: "200px" },
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
+                        width: { xs: "100px", md: "20px" },
+                  
                       }}
                     >
-                      <Typography fontSize={"24px"}>{text}</Typography>
-                      <Typography fontSize={"16px"}>{body}</Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "24px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {text}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "16px",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {body}
+                      </Typography>
                     </Box>
                     <Box>
                       <Edit
