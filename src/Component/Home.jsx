@@ -5,6 +5,9 @@ import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { Add, Edit, ArrowOutward, Delete } from "@mui/icons-material";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 import Modal from "./modal";
 
@@ -42,11 +45,25 @@ export const btnStyle = {
 };
 // eslint-disable-next-line react/prop-types
 
+const getFilterData = (query, startDate, items) => {
+  if (!query & !startDate) {
+    return items;
+  }
+
+  return items.filter(
+    (item) =>
+      (startDate !== null &&
+        item.date?.includes(startDate?.toLocaleDateString())) ||
+      (query && item.text.toLowerCase().includes(query.toLowerCase())) ||
+      (query && item.body.toLowerCase().includes(query.toLowerCase()))
+  );
+};
 const Home = ({ allData, setAllData }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState("");
+  const [search, setSearch] = useState();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -87,6 +104,13 @@ const Home = ({ allData, setAllData }) => {
   const handleClick = (id) => {
     navigate(`/details/${id}`);
   };
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+  const [startDate, setStartDate] = useState(null);
+
+  const filteredItems = getFilterData(search, startDate, allData);
+
   return (
     <>
       <Container maxWidth="md">
@@ -114,8 +138,34 @@ const Home = ({ allData, setAllData }) => {
               Notes App
             </Typography>
 
-            {allData.length > 0 ? (
-              allData.map(({ text, body, id }, index) => {
+            {/* //search bar add */}
+            {/* {allData.length > 0 && ( */}
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mx: 2,
+                mt: 2,
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Search"
+                name="search"
+                value={search}
+                style={inputStyle}
+                onChange={handleSearch}
+              />
+              <DatePicker
+                selected={startDate}
+                onChange={(date) => setStartDate(date)}
+              />
+            </Box>
+            {/* )} */}
+
+            {filteredItems.length > 0 ? (
+              filteredItems.map(({ text, body, id }, index) => {
                 return (
                   <Box
                     key={index}
