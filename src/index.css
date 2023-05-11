@@ -7,3 +7,38 @@ body {
   background-color: #0D1117;
   color: #fff;
 }
+
+.react-datepicker__input-container {
+  background: #181B24;
+
+}
+
+input {
+  background: #181B24;
+  border: 1px solid #181B24;
+  color: #fff;
+  height: 35px;
+  border: 3px solid rgba(82, 89, 96, 0.26);
+  border-radius: 8px;
+  outline: none;
+  padding-left: 6px;
+  width: 100%;
+  font-size: 17px;
+  flex-basis: "100%";
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+::-webkit-input-placeholder {
+  /* Edge */
+  color: white;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer */
+  color: white;
+}
+
+::placeholder {
+  color: white;
+}

@@ -143,9 +143,15 @@ const Home = ({ allData, setAllData }) => {
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: { xs: "center", md: "space-between" },
+                flexDirection: {
+                  xs: "column",
+                  md: "row",
+                },
+
+                gap: "20px",
                 alignItems: "center",
-                mx: 2,
+                mx: { xs: 5, md: 2 },
                 mt: 2,
               }}
             >
@@ -157,10 +163,19 @@ const Home = ({ allData, setAllData }) => {
                 style={inputStyle}
                 onChange={handleSearch}
               />
-              <DatePicker
-                selected={startDate}
-                onChange={(date) => setStartDate(date)}
-              />
+              <Box
+                width="100%"
+                mr={{
+                  xs: 1,
+                  md: 2,
+                }}
+              >
+                <DatePicker
+                  placeholderText="Select Date"
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                />
+              </Box>
             </Box>
             {/* )} */}
 
@@ -186,7 +201,6 @@ const Home = ({ allData, setAllData }) => {
                     <Box
                       sx={{
                         width: { xs: "100px", md: "200px" },
-                  
                       }}
                     >
                       <Typography
